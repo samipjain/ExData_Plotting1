@@ -1,5 +1,4 @@
 filename <- "C:/Users/samip/Documents/exdata-data-household_power_consumption/household_power_consumption.txt"
-
 data <- read.table(filename,
                    header = TRUE,
                    sep = ";",
@@ -9,12 +8,12 @@ data$Date <- as.Date(data$Date, format="%d/%m/%Y")
 
 mydata <- subset(data, subset=(Date == "2007-02-01" | Date == "2007-02-02"))
 
-hist(mydata$Global_active_power,
-     main="Global Active Power",
-     col="red",
-     xlab="Global Active Power (kilowatts)",
-     breaks=12,
-     ylim=c(0,1200))
+datetime <- paste(as.Date(mydata$Date), mydata$Time)
+mydata$Datetime <- as.POSIXct(datetime)
 
-dev.copy(png,file="plot1.png",height=480,width=480)
+plot(mydata$Global_active_power ~ mydata$Datetime, type="l",
+     xlab="",
+     ylab="Global Active Power (kilowatts)")
+
+dev.copy(png,file="plot2.png",height=480,width=480)
 dev.off()
